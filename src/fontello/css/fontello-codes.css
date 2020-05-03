@@ -1,0 +1,23 @@
+
+.icon-star-empty:before { content: '\e800'; } /* '' */
+.icon-star:before { content: '\e801'; } /* '' */
+.icon-search:before { content: '\e803'; } /* '' */
+.icon-bar:before { content: '\e804'; } /* '' */
+.icon-location:before { content: '\e805'; } /* '' */
+.icon-ok:before { content: '\e806'; } /* '' */
+.icon-right-bold-1:before { content: '\e807'; } /* '' */
+.icon-cafe:before { content: '\e80c'; } /* '' */
+.icon-fast-food:before { content: '\e815'; } /* '' */
+.icon-monument:before { content: '\e827'; } /* '' */
+.icon-religious-christian:before { content: '\e82f'; } /* '' */
+.icon-spin1:before { content: '\e830'; } /* '' */
+.icon-restaurant:before { content: '\e832'; } /* '' */
+.icon-spin6:before { content: '\e839'; } /* '' */
+.icon-town-hall:before { content: '\e83c'; } /* '' */
+.icon-tree-2:before { content: '\e83f'; } /* '' */
+.icon-right-circled-2:before { content: '\f0a9'; } /* '' */
+.icon-star-half-alt:before { content: '\f123'; } /* '' */
+.icon-right-circled2:before { content: '\f18e'; } /* '' */
+.icon-map-signs:before { content: '\f277'; } /* '' */
+.icon-map-o:before { content: '\f278'; } /* '' */
+.icon-map:before { content: '\f279'; } /* '' */

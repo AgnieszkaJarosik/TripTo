@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const Input = styled.input`
   font-family: 'Open Sans', sans-serif;
-  width: 100%;
+  width: 92%;
   border: 0;
   border-bottom: 2px solid white;
   margin: 1rem 0 0 0;
@@ -45,7 +45,15 @@ const Input = styled.input`
     :required,:invalid { 
       box-shadow:none; 
     }
-  }  
+  }
+  
+  input:-webkit-autofill,
+  input:-webkit-autofill:active,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:hover {
+    /* background-color: rgba(76, 82, 84, 0.8) !important;
+    color: white !important;*/
+  }
 `;
 
 const Label = styled.label`
@@ -64,7 +72,7 @@ const InputContainer = styled.div`
 
 const InputPlus = ({name, placeholder, onChange}) => (
   <InputContainer>
-    <Input type="text" placeholder={placeholder} name={name} id={name} 
+    <Input type="text" placeholder={placeholder} name={name} id={name}
            onChange={ e => onChange(e.target.value) } required>
     </Input>
     <Label for={name} className="form__label">{name}</Label>

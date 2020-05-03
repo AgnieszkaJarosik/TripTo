@@ -1,21 +1,31 @@
 import React from "react";
 import GoogleMapReact from "google-map-react";
-import PropTypes from "prop-types"; 
 import Marker from "components/Marker";
-
 
 const apiKey = process.env.REACT_APP_MAPS_KEY;
  
 const Map = (props) => {
-
   return (
       <GoogleMapReact
           bootstrapURLKeys={{ key: apiKey}}
           defaultCenter={props.center}
           defaultZoom={props.zoom}
           yesIWantToUseGoogleMapApiInternals
-          onGoogleApiLoaded={({ map, maps }) => props.onMapLoaded(map) }
+          onGoogleApiLoaded={({ map, maps }) => props.onMapLoaded(map) } 
       >
+        {props.places && Object.keys(props.places).map( key => {
+          if(props.checkboxes.includes(key)){
+            return props.places[key] && props.places[key].map( place => (
+              <Marker
+                key={place.id}
+                category={key}
+                lat={place.coordinates.latitude}
+                lng={place.coordinates.longitude}
+                place={place}
+              />
+            ))
+          }
+        })}
       </GoogleMapReact>
     );
 }
