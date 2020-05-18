@@ -89,7 +89,7 @@ const Checkbox = styled.input`
 `;
 
 const Sidenav = (props) => {
-  const restaurants = ['Restauracja', 'Fastfood', 'Pizzeria', 'Bar mleczny', 'Naleśnikarnia', 'Kawiarnia', 'Pub'];
+  const restaurants = ['Restauracja', 'Fastfood', 'Pizzeria', 'Bar mleczny', 'Kawiarnia', 'Pub'];
   const places = ['Muzea', 'Galerie sztuki', 'Zabytki', 'Kościoły', 'Parki', 'Pomniki'];
 
   return (

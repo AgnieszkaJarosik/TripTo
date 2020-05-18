@@ -165,7 +165,6 @@ const Nav = (props) => {
 
   useEffect( () => {
     history.listen((location, action) => {
-      console.log(nav.current);
     });
   })
 

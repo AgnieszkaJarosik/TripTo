@@ -1,41 +1,34 @@
 const Fetch = {
-  zomato(data) {
-    const apiKey = process.env.REACT_APP_ZOMATO_KEY;
-    const url = `https://cors-anywhere.herokuapp.com/https://developers.zomato.com/api/v2.1/categories`;
-    return fetch(url, {headers: {'user-key': apiKey} })
+  restaurants(term, location) {
+    const url = `/restaurants?location=${location}&term=${term}`;
+    return fetch(url)
       .then( resp => {
         return resp.json();
       })
       .then (jsonResp => {
-        console.log(jsonResp);
+        return jsonResp;
       })
       .catch( err => {
-        console.log(err);
+        return [];
       });
   },
 
-  yelp(term, location) {
-    const apiKey = process.env.REACT_APP_YELP_KEY;
-    const url = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=${term}&location=${location}`;
-    return fetch(url, {headers: {Authorization: `Bearer ${apiKey}`} })
+  places(term, location) {
+    const url = `/places?term=${term}&location=${location}`;
+    return fetch(url)
       .then( resp => {
         return resp.json();
       })
-      .then( jsonResponse => {
-        if(jsonResponse.businesses) {
-          console.log(jsonResponse);
-          return jsonResponse.businesses.map( place => place )}
+      .then (jsonResp => {
+        return jsonResp;
       })
-      .catch( e => {
-        console.log(e);
+      .catch( err => {
         return [];
       })
   },
 
   triposo( location ) {
-    const accountId = process.env.REACT_APP_ACCOUNT_ID;
-    const apiKey = process.env.REACT_APP_TRIPOSO_API;
-    const url = `https://www.triposo.com/api/20200405/location.json?&id=${location}&fields=all&account=${accountId}&token=${apiKey}`;
+    const url = `/info?&location=${location}`;
     return fetch(url)
       .then( r => {
         return r.json();

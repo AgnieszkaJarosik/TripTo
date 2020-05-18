@@ -17,7 +17,7 @@ export function fetchPlaces(place){
     const state = getState();
     if (shouldFetchPlaces(state, place)){
       dispatch(setEndStatus(false));
-      return fetch.yelp(place, state.input.end)  
+      return fetch.restaurants(place, state.input.end)
       .then( resp => {
         dispatch(fetchPlacesSuccess({resp:resp, name:place}));
         dispatch(setEndStatus(true));

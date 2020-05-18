@@ -2,7 +2,8 @@ import React from "react";
 import GoogleMapReact from "google-map-react";
 import Marker from "components/Marker";
 
-const apiKey = process.env.REACT_APP_MAPS_KEY;
+// const apiKey = process.env.REACT_APP_MAPS_KEY;
+const apiKey = null;
  
 const Map = (props) => {
   return (
@@ -19,8 +20,8 @@ const Map = (props) => {
               <Marker
                 key={place.id}
                 category={key}
-                lat={place.coordinates.latitude}
-                lng={place.coordinates.longitude}
+                lat={place.lat}
+                lng={place.lng}
                 place={place}
               />
             ))
