@@ -22,7 +22,6 @@ const Directions = {
         directionsService.route(request, (result, status) => {
           if (status === 'OK') {
             this.directionsRenderer.setDirections(result);
-            console.log(result);
             return result;
           } else {
             console.log('request failed');

@@ -10,6 +10,7 @@ import Map from "components/Map";
 import Sidenav from "components/Sidenav";
 
 import Directions from "services/Directions";
+import Geocoding from "../services/Geocoding";
 
 const MapPageContainer = styled.div`
   display: flex;
@@ -28,23 +29,23 @@ const MapContainer = styled.div`
 
 const MapPage = (props) => {
   const [currMap, setCurrMap] = useState(null);
-  const [currDirections, setCurrDirections] = useState([]);
-
-  useEffect( () => {
-    return () => {
-      props.resetCheckboxes();
-    }
-  }, []);
 
   async function onMapLoaded (map) {
     setCurrMap(map);
-    Directions.initRenderer();
-    const dir = await Directions.getDirections({
-      start: props.input.start,
-      end: props.input.end,
-      currMap: map 
-    });
-    setCurrDirections(dir);
+    try{
+      if(props.input.start && props.input.end){
+        Directions.initRenderer();
+        await Directions.getDirections({
+          start: props.input.start,
+          end: props.input.end,
+          currMap: map
+        });
+      } else if(props.input.end){
+        await Geocoding.findLatLang(props.input.end, map);
+      }
+    } catch(e){
+      console.log(e.message);
+    }
   } 
 
   function handlePlacesSearch (place) {
@@ -60,10 +61,11 @@ const MapPage = (props) => {
         checkboxes={props.checkbox}  >
       </Sidenav>
       <MapContainer>
-        <Map onMapLoaded={onMapLoaded}
-            dir={currDirections}
-            checkboxes={props.checkbox}  
-            places={props.places} />
+        <Map
+          onMapLoaded={onMapLoaded}
+          checkboxes={props.checkbox}
+          places={props.places} >
+        </Map>
       </MapContainer>
     </MapPageContainer>
   );

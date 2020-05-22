@@ -5,8 +5,10 @@ import styled from 'styled-components';
 import configureStore from "./redux/configureStore";
 import {Provider as ReduxProvider} from "react-redux";
 
+import RefreshRoute from "./pages/RefreshRoute";
 import MapPage from "pages/MapPage";
-import ListPage from "pages/ListPage";
+import PlacesPage from "pages/PlacesPage";
+import RestaurantsPage from "./pages/RestaurantsPage";
 import HomePage from "pages/HomePage";
 import PlacePage from "pages/PlacePage";
 import NotFoundPage from "pages/NotFoundPage";
@@ -17,7 +19,6 @@ import Footer from "components/Footer";
 import GlobalStyle from "components/GlobalStyle";
 
 const Wrapper = styled.div`
-  width: 100vw;
   height: 100vh;
   display: grid;
   grid-template-rows: 4rem auto 4rem;
@@ -50,10 +51,10 @@ const App = () => (
         <div>
           <Switch>
             <Route exact path="/" component={HomePage} />
-            <Route path="/map" component={MapPage} />
-            <Route path="/restaurants" component={ListPage} />
-            <Route path="/sights" component={ListPage} />
-            <Route path="/place" component={PlacePage} />
+            <RefreshRoute path="/map" component={MapPage} />
+            <RefreshRoute path="/restaurants" component={RestaurantsPage} />
+            <RefreshRoute path="/sights" component={PlacesPage} />
+            <RefreshRoute path="/place" component={PlacePage} />
             <Route component={NotFoundPage} />
           </Switch>
         </div>

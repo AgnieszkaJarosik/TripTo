@@ -60,7 +60,7 @@ const MainContent = styled.div`
   }
 
   > span {
-    margin: .5rem 0;
+    margin: .3rem 0;
   }
 
   .rating {
@@ -74,7 +74,6 @@ const MainContent = styled.div`
 `;
 
 const AddressContainer = styled.div`
-  margin-top: 1rem;
 
   > span {
     display: block;
@@ -129,30 +128,3 @@ function showStars (rating) {
   }
   return stars;
 }
-
-
-// return (
-//   <PlaceContainer>
-//     <ImgContainer>
-//       <a href={props.place.url} target="_blanc">
-//         <img
-//           src={props.place.image_url || imgBackground}
-//           alt=""
-//         />
-//       </a>
-//     </ImgContainer>
-//     <ContentContainer>
-//       <MainContent>
-//         <h2>{props.place.name}</h2>
-//         <span className="rating">{rating}</span>
-//         <span>{props.place.price}</span>
-//         <span className="category">{props.place.categories[0].title}</span>
-//       </MainContent>
-//       <AddressContainer>
-//         <span>{props.place.location.address1}</span>
-//         <span>{props.place.location.city}</span>
-//         <span>{props.place.display_phone}</span>
-//       </AddressContainer>
-//     </ContentContainer>
-//   </PlaceContainer>
-// )

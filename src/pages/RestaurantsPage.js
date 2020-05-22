@@ -1,13 +1,13 @@
 import React, {useEffect} from "react";
 import styled from 'styled-components';
-import { useLocation } from "react-router-dom";
 
 import { connect } from "react-redux";
 import * as checkboxActions from "redux/actions/checkboxActions";
-import * as placesActions from "redux/actions/placesActions";
+import * as restaurantsActions from "redux/actions/restaurantsActions";
 import { bindActionCreators } from "redux";
 
 import SidenavList from "components/SidenavList";
+import PlacesList from "components/PlacesList";
 import Place from "components/Place";
 import Animation from "components/Animation";
 
@@ -16,62 +16,38 @@ const ListContainer = styled.div`
   height: 100%;
 `;
 
-const PlacesList = styled.div`
-  height: 100%;
-  padding: 0 1rem;
-  width: 100%;
-  background-color: rgba(233, 229, 232, .2);
-  display: flex;
-  flex-direction: column;
-`;
-
-const Info = styled.div`
-  align-self: center;
-  font-size: 2rem;
-  color: #C3745C;
-`;
-
-const ListPage = (props) => {
-  const location = useLocation().pathname;
+const RestaurantsPage = (props) => {
+  const restaurants = ['Restauracja', 'Fastfood', 'Pizzeria', 'Bar mleczny', 'Kawiarnia', 'Pub'];
 
   useEffect( () => {
-    if(location==="/restaurants") {
       props.resetCheckboxes('Restauracja');
-      props.fetchPlaces('Restauracja');
-    }  else {
-      props.resetCheckboxes('Muzea');
-      props.fetchPlaces('Muzea');
-    }
-  }, [location]);
-
-  useEffect( () => {
-    return () => {
-      props.resetCheckboxes();
-    }
+      props.fetchRestaurants('Restauracja');
   }, []);
 
   function handlePlacesSearch (place) {
     props.saveCheckbox(place);
-    props.fetchPlaces(place);
+    props.fetchRestaurants(place);
   }
 
   return (
     <ListContainer>
       <SidenavList end={props.input.end}
-              site={location}
-              checkboxes={props.checkbox}
-              handlePlacesSearch={handlePlacesSearch} >
+                   places={restaurants}
+                   checkboxes={props.checkbox}
+                   handlePlacesSearch={handlePlacesSearch} >
       </SidenavList>
       <PlacesList>
         <Animation></Animation>
-        {props.places && Object.keys(props.places).map( key => {
+        {props.restaurants && Object.keys(props.restaurants).map( key => {
           if(props.checkbox.includes(key)){
-            return props.places[key].map( place => (
+            return props.restaurants[key].map( place => (
               <Place key={place.id} place={place}></Place>
             ))
+          } else {
+            return null;
           }
-          })
-        } 
+        })
+        }
       </PlacesList>
     </ListContainer>
   );
@@ -81,7 +57,7 @@ function mapSateToProps(state){
   return {
     input: state.input,
     checkbox: state.checkbox,
-    places: state.places,
+    restaurants: state.restaurants,
     end: state.end
   }
 }
@@ -90,8 +66,8 @@ function mapDispatchToProps(dispatch){
   return {
     saveCheckbox: bindActionCreators(checkboxActions.saveCheckbox, dispatch),
     resetCheckboxes: bindActionCreators(checkboxActions.resetCheckboxes, dispatch),
-    fetchPlaces: bindActionCreators(placesActions.fetchPlaces, dispatch)
+    fetchRestaurants: bindActionCreators(restaurantsActions.fetchRestaurants, dispatch)
   }
 }
 
-export default connect(mapSateToProps, mapDispatchToProps)(ListPage);
+export default connect(mapSateToProps, mapDispatchToProps)(RestaurantsPage);

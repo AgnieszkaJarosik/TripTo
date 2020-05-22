@@ -27,6 +27,7 @@ const Content = styled.div`
   font-size: 1.1rem;
 
   > h2 {
+    text-transform: capitalize;
     font-size: 2rem;
     font-weight: 700;
     color: #825355;
@@ -50,58 +51,41 @@ const ImagesContainer = styled.div`
   }
 `;
 
-const Place = (props) => {
+const Place = ({input, setEndStatus}) => {
   const [info, setInfo] = useState([]);
   const [imgs, setImgs] = useState([]);
 
   useEffect(() => {
-    try{
-      fetchInfo(props.input.end);
-      fetchTriposo(props.input.end);
-    } catch(e){
-      setInfo([]);
-    }
-  }, []);
+    ( async () => {
+      try{
+        setEndStatus(false);
+        const someInfo = await Fetch.mediaWiki(input.end);
+        setEndStatus(true);
+        setInfo(someInfo);
+      } catch(e){
+        setInfo([]);
+      }
+    })();
+  }, [input.end]);
 
   useEffect(() => {
-    try{
-      fetchImg (props.input.end);
-    } catch(e){
-      setImgs([]);
-    }
-  },[]);
-
-  async function fetchTriposo (place) {
-    const someInfo = await Fetch.triposo(place);
-    console.log(someInfo);
-    // setInfo(someInfo);
-}
-
-  async function fetchInfo (place) {
-    props.setEndStatus(false);
-    const someInfo = await Fetch.mediaWiki(place);
-    props.setEndStatus(true);
-    setInfo(someInfo);
-  }
-  async function fetchImg (place) {
-    const img = await Fetch.wikiImg(place);
-    console.log(img);
-    let titles;
-    try {
-      titles = img.map( i => {
-        return i.substring(5).replace(/ /g,"_");
-      });
-      setImgs(titles);
-    } catch(e){
-      setImgs([]);
-    }
-  }
+    ( async () => {
+      try{
+        const img = await Fetch.wikiImg(input.end);
+        const titles = img.map( i => i.substring(5).replace(/ /g,"_"));
+        setImgs(titles);
+      } catch(e){
+        setImgs([]);
+      }
+    })()
+  },[input.end]);
+  
 
   return(
     <Container>
       <Content>
         <Animation></Animation>
-        <h2>{props.input.end}</h2>
+        <h2>{input.end}</h2>
         {info}
       <ImagesContainer>
         { imgs && imgs.map( img => (

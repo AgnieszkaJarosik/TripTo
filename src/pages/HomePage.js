@@ -67,7 +67,8 @@ const HomePage = (props) => {
   
   return (
     <HomePageContainer>
-        <Form 
+        <Form
+            autocomplete="off"
             onSubmit={(event) => {
               event.preventDefault();
               event.target.reset();
@@ -87,7 +88,7 @@ const HomePage = (props) => {
             </Link>
             <Prompt
               when={isBlocking}
-              message="Czy chcesz opuścić stronę bez miejsce docelowego podróży"
+              message="Ustaw miejsce docelowe podróży"
             />
         </Form>
     </HomePageContainer>

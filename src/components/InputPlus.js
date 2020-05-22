@@ -28,7 +28,7 @@ const Input = styled.input`
     padding-bottom: 6px;  
     font-weight: 700;
     border-width: 3px;
-    border-image: linear-gradient(to right, #E9E5E8, #C3745C);
+    border-image: linear-gradient(to right, #E9E5E8, #c3745c);
     border-image-slice: 1;
     color: #fff;
     font-weight: normal;
@@ -45,14 +45,6 @@ const Input = styled.input`
     :required,:invalid { 
       box-shadow:none; 
     }
-  }
-  
-  input:-webkit-autofill,
-  input:-webkit-autofill:active,
-  input:-webkit-autofill:focus,
-  input:-webkit-autofill:hover {
-    /* background-color: rgba(76, 82, 84, 0.8) !important;
-    color: white !important;*/
   }
 `;
 
@@ -75,7 +67,7 @@ const InputPlus = ({name, placeholder, onChange}) => (
     <Input type="text" placeholder={placeholder} name={name} id={name}
            onChange={ e => onChange(e.target.value) } required>
     </Input>
-    <Label for={name} className="form__label">{name}</Label>
+    <Label htmlFor={name} className="form__label">{name}</Label>
   </InputContainer>
 );
 

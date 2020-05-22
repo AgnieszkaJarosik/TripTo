@@ -5,6 +5,7 @@ import CheckboxOption from "components/CheckboxOption";
 
 const Container = styled.div`
   h3 {
+  text-transform: capitalize;
     font-size: 1.2rem;
     margin: .5rem 0;
     border-bottom: 2px solid;
@@ -58,6 +59,7 @@ const Options = styled.div`
 
   @media only screen and (max-width: 768px) {
     position: absolute;
+    opacity: 0;
     transform: translate(-120%, 0);
     padding: 3.5rem 1rem 1rem 1rem;
   }
@@ -76,6 +78,7 @@ const Checkbox = styled.input`
 
     :checked ~ ${Options} {
       transform: translate(0);
+      opacity: 1;
       width: 100%;
       height: 100%;
       z-index: 1;

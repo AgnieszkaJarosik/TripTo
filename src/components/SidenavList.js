@@ -4,6 +4,7 @@ import CheckboxOption from "components/CheckboxOption";
 
 const Container = styled.div`
   h3 {
+  text-transform: capitalize;
     font-size: 1.2rem;
     margin: .5rem 0;
     border-bottom: 2px solid;
@@ -59,6 +60,7 @@ const Options = styled.div`
   @media only screen and (max-width: 768px) {
     position: absolute;
     transform: translate(-120%, 0);
+    opacity: 0;
     padding: 3.5rem 1rem 1rem 1rem;
   }
 `;
@@ -76,6 +78,7 @@ const Checkbox = styled.input`
 
     :checked ~ ${Options} {
       transform: translate(0);
+      opacity: 1;
       width: 100%;
       height: 100%;
       z-index: 1;
@@ -88,39 +91,23 @@ const Checkbox = styled.input`
   }  
 `;
 
-const Sidenav = (props) => {
-  const restaurants = ['Restauracja', 'Fastfood', 'Pizzeria', 'Bar mleczny', 'Kawiarnia', 'Pub'];
-  const places = ['Muzea', 'Galerie sztuki', 'Zabytki', 'Kościoły', 'Parki', 'Pomniki'];
-
-  return (
+const Sidenav = (props) => (
     <Container>
       <Checkbox type="checkbox"></Checkbox>
       <i className="icon-right-circled2"></i>
       <Options>
       <h3>Miejsce: {props.end}</h3>
-        {props.site==="/restaurants" ? 
-            restaurants.map( (restaurant, idx) => (
-              <CheckboxOption 
-                key={idx}
-                label={restaurant} 
-                onClick={()=>props.handlePlacesSearch(restaurant)}
-                checkboxes={props.checkboxes} 
-              >
-              </CheckboxOption>
-            ))
-          :
-            places.map( (place, idx) => (
-              <CheckboxOption 
-                key={idx}
-                label={place} 
-                onClick={()=>props.handlePlacesSearch(place)}
-                checkboxes={props.checkboxes} 
-              >
-              </CheckboxOption>
-            ))}
+        {props.places && props.places.map( (place, idx) => (
+          <CheckboxOption
+            key={idx}
+            label={place}
+            onClick={()=>props.handlePlacesSearch(place)}
+            checkboxes={props.checkboxes}
+          >
+          </CheckboxOption>
+        ))}
       </Options> 
     </Container>
   );
-}
 
 export default Sidenav;

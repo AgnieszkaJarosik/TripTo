@@ -1,6 +1,9 @@
+import { latinize } from "utils/latinize";
+
 const Fetch = {
   restaurants(term, location) {
-    const url = `/restaurants?location=${location}&term=${term}`;
+    const latinLocation = latinize(location);
+    const url = `https://trip-to.herokuapp.com/restaurants?location=${latinLocation}&term=${term}`;
     return fetch(url)
       .then( resp => {
         return resp.json();
@@ -14,7 +17,8 @@ const Fetch = {
   },
 
   places(term, location) {
-    const url = `/places?term=${term}&location=${location}`;
+    const latinLocation = latinize(location);
+    const url = `https://trip-to.herokuapp.com/places?term=${term}&location=${latinLocation}`;
     return fetch(url)
       .then( resp => {
         return resp.json();
@@ -27,8 +31,9 @@ const Fetch = {
       })
   },
 
-  triposo( location ) {
-    const url = `/info?&location=${location}`;
+  info( location ) {
+    const latinLocation = latinize(location);
+    const url = `https://trip-to.herokuapp.com/info?&location=${latinLocation}`;
     return fetch(url)
       .then( r => {
         return r.json();
@@ -37,7 +42,7 @@ const Fetch = {
         return rjson;
       })
       .catch( err => {
-        console.log(err);
+        console.log(err.message);
       })
   },
 
@@ -69,7 +74,7 @@ const Fetch = {
         return info;
       })
       .catch(err => {
-        console.log(err);
+        console.log(err.message);
       });
   },
   
@@ -80,12 +85,11 @@ const Fetch = {
         return r.json();
       })
       .then( respJson => {
-        console.log(respJson);
         const value = Object.values(respJson.query.pages);
         return value[0].images.map( img => img.title);
       })
       .catch(err=>{
-        console.log(err);
+        console.log(err.message);
       })
   }
 }

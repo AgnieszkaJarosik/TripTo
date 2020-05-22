@@ -2,30 +2,30 @@ import * as types from "redux/actions/actionTypes";
 import {setEndStatus} from "redux/actions/fetchEndAction";
 import fetch from "services/Fetch";
 
-export function fetchPlacesSuccess(value){
-  return { type: types.FETCH_PLACES_SUCCESS, value }
+export function fetchRestaurantsSuccess(value){
+  return { type: types.FETCH_RESTAURANTS_SUCCESS, value }
 }
 
-export function deletePlaces(){
+export function deleteRestaurants(){
   return { type: types.DELETE_TRIP }
 }
 
 //  thunk
 
-export function fetchPlaces(place){  
+export function fetchRestaurants(place){
   return function(dispatch, getState) {
     const state = getState();
     if (shouldFetchPlaces(state, place)){
       dispatch(setEndStatus(false));
-      return fetch.places(place, state.input.end)
-      .then( resp => {
-        dispatch(fetchPlacesSuccess({resp:resp, name:place}));
-        dispatch(setEndStatus(true));
-      })
-      .catch(e => {
-        console.log(e);
-      })
-    } 
+      return fetch.restaurants(place, state.input.end)
+        .then( resp => {
+          dispatch(fetchRestaurantsSuccess({resp:resp, name:place}));
+          dispatch(setEndStatus(true));
+        })
+        .catch(e => {
+          console.log(e);
+        })
+    }
   };
 }
 

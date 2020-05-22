@@ -1,5 +1,5 @@
-import React, {useEffect, useRef} from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, {useRef} from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "components/Logo";
 
@@ -77,9 +77,13 @@ const StyledUl = styled.ul`
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: ${props => props.heightValue};
+    height: 0;
     visibility: visible;
   }
+`;
+
+const LogoLink = styled(Link)`
+  text-decoration: none;
 `;
 
 const StyledLink = styled(Link)`
@@ -159,45 +163,39 @@ const Checkbox = styled.input`
 `;
 
 
-const Nav = (props) => {
-  const history = useHistory(); 
-  const nav = useRef(null);
-
-  useEffect( () => {
-    history.listen((location, action) => {
-    });
-  })
+const Nav = () => {
+  const checkboxRef = useRef();
 
   return (
     <NavContainer>
-      <Logo>TripTo</Logo>
+      <LogoLink to="/"><Logo>TripTo</Logo></LogoLink>
       <MenuToggle>
-        <Checkbox  type="checkbox"></Checkbox>
+        <Checkbox  type="checkbox" ref={checkboxRef}></Checkbox>
         <SpanContainer>
           <span></span>
           <span></span>
           <span></span>
         </SpanContainer>
-        <StyledUl ref={nav}>
-            <li>
-              <StyledLink to="/">Nowa podróż</StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/map">Mapa</StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/restaurants">Restauracje</StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/sights">Atrakcje</StyledLink>
-            </li>
-            <li>
-              <StyledLink to="/place">Miejsce</StyledLink>
-            </li>
+        <StyledUl>
+          <li>
+            <StyledLink to="/" onClick={()=>checkboxRef.current.checked=false}>Nowa podróż</StyledLink>
+          </li>
+          <li>
+            <StyledLink to="/map" onClick={()=>checkboxRef.current.checked=false}>Mapa</StyledLink>
+          </li>
+          <li>
+            <StyledLink to="/restaurants" onClick={()=>checkboxRef.current.checked=false}>Restauracje</StyledLink>
+          </li>
+          <li>
+            <StyledLink to="/sights" onClick={()=>checkboxRef.current.checked=false}>Atrakcje</StyledLink>
+          </li>
+          <li>
+            <StyledLink to="/place" onClick={()=>checkboxRef.current.checked=false}>Miejsce</StyledLink>
+          </li>
         </StyledUl>
-        </MenuToggle>
+      </MenuToggle>
     </NavContainer>
-  );
+  )
 }
 
 export default Nav;

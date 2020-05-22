@@ -2,8 +2,7 @@ import React from "react";
 import GoogleMapReact from "google-map-react";
 import Marker from "components/Marker";
 
-// const apiKey = process.env.REACT_APP_MAPS_KEY;
-const apiKey = null;
+const apiKey = process.env.REACT_APP_MAPS_KEY;
  
 const Map = (props) => {
   return (
@@ -12,7 +11,7 @@ const Map = (props) => {
           defaultCenter={props.center}
           defaultZoom={props.zoom}
           yesIWantToUseGoogleMapApiInternals
-          onGoogleApiLoaded={({ map, maps }) => props.onMapLoaded(map) } 
+          onGoogleApiLoaded={({ map, maps }) => props.onMapLoaded(map) }
       >
         {props.places && Object.keys(props.places).map( key => {
           if(props.checkboxes.includes(key)){
@@ -25,6 +24,8 @@ const Map = (props) => {
                 place={place}
               />
             ))
+          } else {
+            return null;
           }
         })}
       </GoogleMapReact>
