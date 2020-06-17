@@ -1,4 +1,4 @@
-#TripTo
+# TripTo
 Progressive Web App for travel planning.
 
 ## General info
@@ -10,26 +10,26 @@ This app communicates with my backend written in Node.js with the
  Express framework, 
 which you can see here: [TripTo api](https://github.com/AgnieszkaJarosik/trip-to-api)
 
-##Built With
+## Built With
 - React 
 - Redux
 - React Router
 - Styled Components
 
-##Getting Started
+## Getting Started
 Clone this repo to your desktop. 
 After that go to it's root directory and run
 
-### `npm install`
+##### `npm install`
 
 to install its dependencies. Once the dependencies are installed, you can run
 
-### `npm start`
+##### `npm start`
 
 to start the application. You will then be able to access it at 
 localhost:3000
 
-### `npm run build`
+##### `npm run build`
 
 Builds the app for production to the `build` folder.<br />
 It correctly bundles React in production mode and optimizes the build for the best performance.
