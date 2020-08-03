@@ -2,7 +2,7 @@ import React from "react";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import styled from 'styled-components';
 
-import configureStore from "./redux/configureStore";
+import store from "./store";
 import {Provider as ReduxProvider} from "react-redux";
 
 import RefreshRoute from "./pages/RefreshRoute";
@@ -40,8 +40,6 @@ const Wrapper = styled.div`
     grid-column: 1/2;
   }
 `;
-
-const store = configureStore();
 
 const App = () => (
   <ReduxProvider store={store}>

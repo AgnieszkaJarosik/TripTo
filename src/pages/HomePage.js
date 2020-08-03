@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Link, Prompt } from "react-router-dom";
 import styled from 'styled-components';
 
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as inputActions from "redux/actions/inputActions";
-import * as checkboxActions from "redux/actions/checkboxActions";
-import * as placesActions from "redux/actions/placesActions";
+import { saveInput, deleteInput } from "actions/trip";
+import { deletePlaces } from "../actions/places";
 
 import Button from "components/Button";
 import InputPlus from "components/InputPlus";
@@ -55,16 +53,16 @@ const Form = styled.form`
 
 `;
 
-const HomePage = (props) => {
-  const [tour, setTour] = useState({start: null, end: null});
+const HomePage = () => {
+  const [tour, setTour] = useState({start: "", end: ""});
   const [isBlocking, setIsBlocking] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect( () => {
-    props.deletePlaces();
-    props.deleteInput();
-    props.resetCheckboxes();
+    dispatch(deleteInput());
+    dispatch(deletePlaces());
   }, [])
-  
+
   return (
     <HomePageContainer>
         <Form
@@ -72,7 +70,7 @@ const HomePage = (props) => {
             onSubmit={(event) => {
               event.preventDefault();
               event.target.reset();
-              props.actions.saveInput(tour);
+              dispatch(saveInput(tour));
             }}
         >
             <InputPlus name="start" placeholder="Skąd" value={tour.start}
@@ -84,7 +82,7 @@ const HomePage = (props) => {
                 }}
               />
             <Link to="/map" >
-              <Button onClick={() => props.saveInput(tour)}>Wyszukaj</Button>
+              <Button onClick={() => dispatch(saveInput(tour))}>Wyszukaj</Button>
             </Link>
             <Prompt
               when={isBlocking}
@@ -95,16 +93,4 @@ const HomePage = (props) => {
   );
 }
 
-function mapSateToProps(state){
-  return {}
-}
-
-function mapDispatchToProps(dispatch){
-  return {
-    saveInput: bindActionCreators(inputActions.saveInput, dispatch),
-    deleteInput: bindActionCreators(inputActions.deleteInput, dispatch),
-    resetCheckboxes: bindActionCreators(checkboxActions.resetCheckboxes, dispatch),
-    deletePlaces: bindActionCreators(placesActions.deletePlaces, dispatch)
-  }
-}
-export default connect(mapSateToProps, mapDispatchToProps)(HomePage);
+export default HomePage;

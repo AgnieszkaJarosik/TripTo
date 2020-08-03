@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch} from "react-redux";
 import styled from 'styled-components';
 
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as checkboxActions from "redux/actions/checkboxActions";
-import * as placesActions from "redux/actions/placesActions";
+import { fetchPlacesData } from "actions/places";
 
 import Map from "components/Map";
 import Sidenav from "components/Sidenav";
 
 import Directions from "services/Directions";
-import Geocoding from "../services/Geocoding";
+import Geocoding from "services/Geocoding";
+import usePlaceFetch from "../hooks/usePlaceFetch";
 
 const MapPageContainer = styled.div`
   display: flex;
@@ -29,62 +28,54 @@ const MapContainer = styled.div`
 
 const MapPage = (props) => {
   const [currMap, setCurrMap] = useState(null);
+  const [checkboxes, setCheckboxes] = useState([]);
+  const [places, setPlaces] = usePlaceFetch();
+  const trip = useSelector(state => state.trip);
+  const dispatch = useDispatch();
 
   async function onMapLoaded (map) {
     setCurrMap(map);
     try{
-      if(props.input.start && props.input.end){
+      if(trip.start && trip.end){
         Directions.initRenderer();
         await Directions.getDirections({
-          start: props.input.start,
-          end: props.input.end,
+          start: trip.start,
+           end: trip.end,
           currMap: map
         });
-      } else if(props.input.end){
-        await Geocoding.findLatLang(props.input.end, map);
+      } else if(trip.end){
+        await Geocoding.findLatLang(trip.end, map);
       }
     } catch(e){
       console.log(e.message);
     }
-  } 
+  }
 
   function handlePlacesSearch (place) {
-    props.saveCheckbox(place);
-    props.fetchPlaces(place);
+    dispatch(fetchPlacesData(place, trip.end));
+    if(checkboxes.includes(place)) {
+      setCheckboxes(checkboxes.filter(item => item !== place));
+    } else {
+      setCheckboxes([...checkboxes, place]);
+    }
   }
 
   return (
     <MapPageContainer>
-      <Sidenav 
-        end={props.input.end}
+      <Sidenav
+        end={trip.end}
         handlePlacesSearch={handlePlacesSearch}
-        checkboxes={props.checkbox}  >
+        checkboxes={checkboxes}  >
       </Sidenav>
       <MapContainer>
         <Map
           onMapLoaded={onMapLoaded}
-          checkboxes={props.checkbox}
-          places={props.places} >
+          checkboxes={checkboxes}
+          places={places} >
         </Map>
       </MapContainer>
     </MapPageContainer>
   );
 }
 
-function mapSateToProps(state){
-  return {
-    input: state.input,
-    checkbox: state.checkbox,
-    places: state.places
-  }
-}
-
-function mapDispatchToProps(dispatch){
-  return {
-    saveCheckbox: bindActionCreators(checkboxActions.saveCheckbox, dispatch),
-    resetCheckboxes: bindActionCreators(checkboxActions.resetCheckboxes, dispatch),
-    fetchPlaces: bindActionCreators(placesActions.fetchPlaces, dispatch)
-  }
-}
-
-export default connect(mapSateToProps, mapDispatchToProps)(MapPage);
+export default MapPage;

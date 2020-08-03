@@ -1,10 +1,8 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
+import { useSelector, useDispatch} from "react-redux";
 import styled from 'styled-components';
 
-import { connect } from "react-redux";
-import * as checkboxActions from "redux/actions/checkboxActions";
-import * as restaurantsActions from "redux/actions/restaurantsActions";
-import { bindActionCreators } from "redux";
+import { fetchPlacesData } from "actions/places";
 
 import SidenavList from "components/SidenavList";
 import PlacesList from "components/PlacesList";
@@ -16,31 +14,41 @@ const ListContainer = styled.div`
   height: 100%;
 `;
 
-const RestaurantsPage = (props) => {
+const RestaurantsPage = () => {
+  const places = useSelector(state => state.fetch.places);
+  const isLoading = useSelector(state => state.fetch.isLoading);
+  const isError = useSelector(state => state.fetch.isError);
+  const trip = useSelector(state => state.trip);
+  const [checkboxes, setCheckboxes] = useState(['Restauracja']);
+  const dispatch = useDispatch();
   const restaurants = ['Restauracja', 'Fastfood', 'Pizzeria', 'Bar mleczny', 'Kawiarnia', 'Pub'];
 
   useEffect( () => {
-      props.resetCheckboxes('Restauracja');
-      props.fetchRestaurants('Restauracja');
+    dispatch(fetchPlacesData('Restauracja', trip.end));
   }, []);
 
   function handlePlacesSearch (place) {
-    props.saveCheckbox(place);
-    props.fetchRestaurants(place);
+    if(checkboxes.includes(place)) {
+      setCheckboxes(checkboxes.filter(item => item !== place));
+    } else {
+      setCheckboxes([...checkboxes, place]);
+      dispatch(fetchPlacesData(place, trip.end));
+    }
   }
 
   return (
     <ListContainer>
-      <SidenavList end={props.input.end}
+      <SidenavList end={trip.end}
                    places={restaurants}
-                   checkboxes={props.checkbox}
+                   checkboxes={checkboxes}
                    handlePlacesSearch={handlePlacesSearch} >
       </SidenavList>
       <PlacesList>
-        <Animation></Animation>
-        {props.restaurants && Object.keys(props.restaurants).map( key => {
-          if(props.checkbox.includes(key)){
-            return props.restaurants[key].map( place => (
+        {isLoading && <Animation></Animation>}
+        {isError && Object.keys(places).length === 0 && <h2>Error</h2>}
+        {places && Object.keys(places).map( key => {
+          if(checkboxes.includes(key)){
+            return places[key].map( place => (
               <Place key={place.id} place={place}></Place>
             ))
           } else {
@@ -53,21 +61,4 @@ const RestaurantsPage = (props) => {
   );
 };
 
-function mapSateToProps(state){
-  return {
-    input: state.input,
-    checkbox: state.checkbox,
-    restaurants: state.restaurants,
-    end: state.end
-  }
-}
-
-function mapDispatchToProps(dispatch){
-  return {
-    saveCheckbox: bindActionCreators(checkboxActions.saveCheckbox, dispatch),
-    resetCheckboxes: bindActionCreators(checkboxActions.resetCheckboxes, dispatch),
-    fetchRestaurants: bindActionCreators(restaurantsActions.fetchRestaurants, dispatch)
-  }
-}
-
-export default connect(mapSateToProps, mapDispatchToProps)(RestaurantsPage);
+export default RestaurantsPage;

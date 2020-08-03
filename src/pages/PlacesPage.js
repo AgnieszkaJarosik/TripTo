@@ -1,10 +1,8 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
+import { useSelector, useDispatch} from "react-redux";
 import styled from 'styled-components';
 
-import { connect } from "react-redux";
-import * as checkboxActions from "redux/actions/checkboxActions";
-import * as placesActions from "redux/actions/placesActions";
-import { bindActionCreators } from "redux";
+import { fetchPlacesData } from "actions/places";
 
 import SidenavList from "components/SidenavList";
 import PlacesList from "components/PlacesList";
@@ -16,58 +14,51 @@ const ListContainer = styled.div`
   height: 100%;
 `;
 
-const PlacesPage = (props) => {
-  const places = ['Muzea', 'Galerie sztuki', 'Zabytki', 'Kościoły', 'Parki', 'Pomniki'];
+const PlacesPage = () => {
+  const places = useSelector(state => state.fetch.places);
+  const isLoading = useSelector(state => state.fetch.isLoading);
+  const isError = useSelector(state => state.fetch.isError);
+  const trip = useSelector(state => state.trip);
+  const [checkboxes, setCheckboxes] = useState(['Muzea']);
+  const dispatch = useDispatch();
+  const options = ['Muzea', 'Galerie sztuki', 'Zabytki', 'Kościoły', 'Parki', 'Pomniki'];
 
   useEffect( () => {
-    props.resetCheckboxes('Muzea');
-    props.fetchPlaces('Muzea');
+    dispatch(fetchPlacesData('Muzea', trip.end));
   }, []);
 
   function handlePlacesSearch (place) {
-    props.saveCheckbox(place);
-    props.fetchPlaces(place);
+    if(checkboxes.includes(place)) {
+      setCheckboxes(checkboxes.filter(item => item !== place));
+    } else {
+      setCheckboxes([...checkboxes, place]);
+      dispatch(fetchPlacesData(place, trip.end));
+    }
   }
 
   return (
     <ListContainer>
-      <SidenavList end={props.input.end}
-              places={places}
-              checkboxes={props.checkbox}
+      <SidenavList end={trip.end}
+              places={options}
+              checkboxes={checkboxes}
               handlePlacesSearch={handlePlacesSearch} >
       </SidenavList>
       <PlacesList>
-        <Animation></Animation>
-        {props.places && Object.keys(props.places).map( key => {
-          if(props.checkbox.includes(key)){
-            return props.places[key].map( place => (
+        {isLoading && <Animation></Animation>}
+        {isError && Object.keys(places).length === 0 && <h2>Error</h2>}
+        {places && Object.keys(places).map( key => {
+          if(checkboxes.includes(key)){
+            return places[key].map( place => (
               <Place key={place.id} place={place}></Place>
             ))
           } else {
             return null;
           }
           })
-        } 
+        }
       </PlacesList>
     </ListContainer>
   );
 };
 
-function mapSateToProps(state){
-  return {
-    input: state.input,
-    checkbox: state.checkbox,
-    places: state.places,
-    end: state.end
-  }
-}
-
-function mapDispatchToProps(dispatch){
-  return {
-    saveCheckbox: bindActionCreators(checkboxActions.saveCheckbox, dispatch),
-    resetCheckboxes: bindActionCreators(checkboxActions.resetCheckboxes, dispatch),
-    fetchPlaces: bindActionCreators(placesActions.fetchPlaces, dispatch),
-  }
-}
-
-export default connect(mapSateToProps, mapDispatchToProps)(PlacesPage);
+export default PlacesPage;

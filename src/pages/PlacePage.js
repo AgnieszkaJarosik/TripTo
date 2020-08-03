@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from "react";
+import {useSelector} from "react-redux";
 import styled from 'styled-components';
 
-import { connect } from "react-redux";
-import * as fetchEndAcion from "redux/actions/fetchEndAction";
-import { bindActionCreators } from "redux";
+// import { connect } from "react-redux";
+// import * as fetchEndAcion from "redux/actions/fetchEndAction";
+// import { bindActionCreators } from "redux";
 
 import Animation from "components/Animation";
 import Fetch from "services/Fetch";
@@ -52,40 +53,39 @@ const ImagesContainer = styled.div`
 `;
 
 const Place = ({input, setEndStatus}) => {
+  const trip = useSelector(state => state.trip);
   const [info, setInfo] = useState([]);
   const [imgs, setImgs] = useState([]);
 
   useEffect(() => {
     ( async () => {
       try{
-        setEndStatus(false);
-        const someInfo = await Fetch.mediaWiki(input.end);
-        setEndStatus(true);
+        const someInfo = await Fetch.mediaWiki(trip.end);
         setInfo(someInfo);
       } catch(e){
         setInfo([]);
       }
     })();
-  }, [input.end]);
+  }, [trip.end]);
 
   useEffect(() => {
     ( async () => {
       try{
-        const img = await Fetch.wikiImg(input.end);
+        const img = await Fetch.wikiImg(trip.end);
         const titles = img.map( i => i.substring(5).replace(/ /g,"_"));
         setImgs(titles);
       } catch(e){
         setImgs([]);
       }
     })()
-  },[input.end]);
-  
+  },[trip.end]);
+
 
   return(
     <Container>
       <Content>
-        <Animation></Animation>
-        <h2>{input.end}</h2>
+        {/*<Animation></Animation>*/}
+        <h2>{trip.end}</h2>
         {info}
       <ImagesContainer>
         { imgs && imgs.map( img => (
@@ -100,16 +100,4 @@ const Place = ({input, setEndStatus}) => {
   )
 }
 
-function mapSateToProps(state){
-  return {
-    input: state.input
-  }
-}
-
-function mapDispatchToProps(dispatch){
-  return {
-    setEndStatus: bindActionCreators(fetchEndAcion.setEndStatus, dispatch)
-  }
-}
-
-export default connect(mapSateToProps, mapDispatchToProps)(Place);
+export default Place;
