@@ -26,10 +26,10 @@ const MapContainer = styled.div`
   background-color: white;
 `;
 
-const MapPage = (props) => {
+const MapPage = () => {
   const [currMap, setCurrMap] = useState(null);
   const [checkboxes, setCheckboxes] = useState([]);
-  const [places, setPlaces] = usePlaceFetch();
+  const places = useSelector(state => state.fetch.places);
   const trip = useSelector(state => state.trip);
   const dispatch = useDispatch();
 

@@ -53,7 +53,7 @@ const PlacesPage = () => {
             ))
           } else {
             return null;
-          }
+          }s
           })
         }
       </PlacesList>

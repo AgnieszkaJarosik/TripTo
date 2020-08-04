@@ -1,6 +1,5 @@
 import React from "react";
 import styled from 'styled-components';
-import { connect } from "react-redux";
 
 const Container = styled.div`
   position: absolute;
@@ -33,11 +32,4 @@ const Animation = (props) => (
   </Container>
 );
 
-
-function mapSateToProps(state){
-  return {
-    end: state.end
-  }
-}
-
-export default connect(mapSateToProps)(Animation);
+export default Animation;
